@@ -1,24 +1,30 @@
-const express = require('express')
+const express = require("express");
+const productRoutes = require("./routes/productRoutes");
+const initializeDatabase= require("./config/databaseConection");
+const initTables = require("./config/databaseConection");
 
-const clientsRoutes = require("./route/client.js")
-const productsRoutes = require("./route/product.js")
 
-const PORT = 3000
 
 const app = express();
+const PORT = 3000;
 
-app.use(express.json())
+app.use(express.json());
 
-// app.use('/compras', comprasRoutes)
+async function startServer() {
+  try {
+    // Inicializa o banco de dados
+    const db = await initializeDatabase();
 
-app.use("/clientes", clientsRoutes)
+    // Inicializa as tabelas
+    await initTables(db);
 
-app.use("/produtos", productsRoutes)
+    // Inicia o servidor
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Erro ao inicializar o banco de dados:", error.message);
+  }
+}
 
-app.use("/", (req, res) =>{
-    return res.send("API de Gerenciamento de Compras")
-})
-
-app.listen(PORT, () => { 
-    console.log("Server running in port " + PORT)
-})
+startServer();
