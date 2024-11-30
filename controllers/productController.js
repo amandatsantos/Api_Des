@@ -1,34 +1,51 @@
-const ProductFacade = require("../facades/productFacades");
+const ProductFacade = require("../facades/productFacade");
+const Product = require("../models/product");
 
 class ProductController {
-  static async create(req, res) {
+  static async createProduct(req, res) {
     try {
-      const product = await ProductFacade.create(req.body);
-      res.status(201).json(product);
+
+      const { name, brand, price, quantity } = req.body;
+
+
+      const newProduct = new Product(null, name, brand, price, quantity);
+
+      const savedProduct = await ProductFacade.create({
+        name: newProduct.name,
+        brand: newProduct.brand,
+        price: newProduct.price,
+        quantity: newProduct.quantity,
+      });
+
+
+      res.status(201).json(savedProduct);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
   }
 
-  static async update(req, res) {
+  static async updateProduct(req, res) {
     try {
-      const product = await ProductFacade.update(req.params.id, req.body);
+      const id = req.params.id;
+      const data = req.body;
+      const product = await ProductFacade.update(id, data);
       res.json(product);
     } catch (error) {
-      res.status(404).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
-  static async inactivate(req, res) {
+  static async inactivateProduct(req, res) {
     try {
-      const product = await ProductFacade.inactivate(req.params.id);
-      res.json(product);
+      const id = req.params.id;
+      const result = await ProductFacade.inactivate(id);
+      res.json(result);
     } catch (error) {
-      res.status(404).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
-  static async list(req, res) {
+  static async getAllProducts(req, res) {
     try {
       const products = await ProductFacade.getAll();
       res.json(products);
@@ -36,6 +53,21 @@ class ProductController {
       res.status(500).json({ error: error.message });
     }
   }
-}
 
+
+  static async getById(req, res) {
+    try {
+      const { id } = req.params;
+      const product = await ProductFacade.getById(id);
+      if (!product) {
+        return res.status(404).json({ error: "Produto não encontrado" });
+      }
+      res.status(200).json(product);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: "Erro ao buscar produto" });
+    }
+  }
+
+}
 module.exports = ProductController;
