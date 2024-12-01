@@ -171,4 +171,25 @@ router.delete("/products/:id/inactivate", ProductController.inactivateProduct);
  */
 router.get("/products", ProductController.getAllProducts);
 
+
+/**
+ * @swagger
+ * /products/delete/{id}:
+ *   delete:
+ *     summary: deleta um products pelo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: deleta cproducts
+ *     responses:
+ *       200:
+ *         description: products deletado com sucesso
+ *       404:
+ *         description: products não encontrado
+ */
+
+router.delete("/products/delete/:id", ProductController.deleteProduct);
 module.exports = router;

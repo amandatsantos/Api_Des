@@ -94,6 +94,35 @@ class ClientFacade {
             connection.release();
         }
     }
+
+    static async delete(id) {
+        const db = await connectDatabase();
+        const connection = await db.getConnection();
+        try {
+            // se o cliente está vinculado à tabela clientbuyproduct
+            const queryCheckRelation = `
+            SELECT COUNT(*) AS count FROM clientbuyproduct WHERE id_client = ?
+        `;
+            const [rows] = await connection.execute(queryCheckRelation, [id]);
+
+            // se houver registros vinculados, retornar um aviso
+            if (rows[0].count > 0) {
+                throw new Error("Não é possível excluir o cliente, pois ele está vinculado a compras.");
+            }
+
+
+            const queryDeleteClient = `
+            DELETE FROM Client WHERE id = ?
+        `;
+            const [result] = await connection.execute(queryDeleteClient, [id]);
+
+            if (result.affectedRows === 0) throw new Error("Cliente não encontrado");
+
+            return { message: "Cliente deletado com sucesso" };
+        } finally {
+            connection.release();
+        }
+    }
 }
 
 module.exports = ClientFacade;

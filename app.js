@@ -33,7 +33,7 @@ async function startServer() {
     });
 
     // Inicia o servidor na porta especificada
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT || 5265;
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);
       console.log(`Documentação disponível em http://localhost:${PORT}/api-docs`);

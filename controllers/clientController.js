@@ -82,6 +82,18 @@ class ClientController {
             res.status(500).json({ error: "Erro ao buscar cliente" });
         }
     }
+
+    static async deleteClient(req, res) {
+        const { id } = req.params;
+
+        try {
+            const result = await ClientFacade.delete(id);
+            return res.status(200).json(result);
+        } catch (error) {
+            console.error(error);
+            return res.status(404).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = ClientController;

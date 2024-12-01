@@ -92,6 +92,35 @@ class ProductFacade {
       connection.release();
     }
   }
+
+  static async deleteProduct(id) {
+    const db = await connectDatabase();
+    const connection = await db.getConnection();
+    try {
+      // ve se o produto está vinculado à tabela clientbuyproduct
+      const queryCheckRelation = `
+            SELECT COUNT(*) AS count FROM clientbuyproduct WHERE id_product = ?
+        `;
+      const [rows] = await connection.execute(queryCheckRelation, [id]);
+
+      // se tiver registros vinculados, retornar um erro
+      if (rows[0].count > 0) {
+        throw new Error("Não é possível excluir o produto, pois ele está vinculado a compras.");
+      }
+
+      // contrário disso excluir o produto
+      const queryDeleteProduct = `
+            DELETE FROM Product WHERE id = ?
+        `;
+      const [result] = await connection.execute(queryDeleteProduct, [id]);
+
+      if (result.affectedRows === 0) throw new Error("Produto não encontrado");
+
+      return { message: "Produto deletado com sucesso" };
+    } finally {
+      connection.release();
+    }
+  }
 }
 
 module.exports = ProductFacade;
