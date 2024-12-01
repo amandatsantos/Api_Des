@@ -15,7 +15,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./routes/*.js"], // Caminho para os comentários das rotas
+  apis: ["./routes/**/*.js"], // Caminho para os comentários das rotas
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

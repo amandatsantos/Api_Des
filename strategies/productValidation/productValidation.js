@@ -18,7 +18,7 @@ function validateProduct(data) {
     throw new Error(`Erro de validação: ${errorMessages}`);
   }
 
-  return result.data; 
+  return result.data;
 }
 
 module.exports = { validateProduct };
