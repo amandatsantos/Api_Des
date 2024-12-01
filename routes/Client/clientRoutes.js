@@ -1,6 +1,5 @@
 const express = require("express");
 const ClientController = require("../../controllers/clientController");
-const { validateClient } = require("../../strategies/clientValidation/clientValidation");
 
 const router = express.Router();
 
@@ -130,6 +129,8 @@ router.get("/clients/:id", ClientController.getById);
  *       404:
  *         description: Cliente não encontrado
  */
+
+
 router.delete("/clients/:id/inactivate", ClientController.inactivateClient);
 
 /**
@@ -164,6 +165,31 @@ router.delete("/clients/:id/inactivate", ClientController.inactivateClient);
  *                     type: string
  *                     example: "active"
  */
+
 router.get("/clients", ClientController.getAllClients);
+
+
+/**
+ * @swagger
+ * /clients/delete/{id}:
+ *   delete:
+ *     summary: deleta um cliente pelo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: deleta cliente
+ *     responses:
+ *       200:
+ *         description: Cliente deletado com sucesso
+ *       404:
+ *         description: Cliente não encontrado
+ */
+
+router.delete("/clients/delete/:id", ClientController.deleteClient);
+
+
 
 module.exports = router;
