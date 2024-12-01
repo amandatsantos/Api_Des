@@ -17,11 +17,14 @@ async function startServer() {
 
     // Importa as rotas de produtos e clientes
     const productRoutes = require("./routes/Product/productRoutes");
-    const clientRoutes = require("./routes/Client/clientRoutes");  // Importando as rotas de clientes
+    const clientRoutes = require("./routes/Client/clientRoutes");
+    const purchases = require("./routes/Purchases/purchases")// Importando as rotas de clientes
 
     // Usa as rotas de produtos e clientes no caminho "/api/"
     app.use("/api/", productRoutes);  // Rotas para produtos
     app.use("/api/", clientRoutes);    // Rotas para clientes
+    app.use("/api/", purchases);    // Rotas para clientes
+
 
     // Log para mapear as rotas acessadas
     app.use((req, res, next) => {

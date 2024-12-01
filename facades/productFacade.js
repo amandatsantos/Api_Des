@@ -4,9 +4,9 @@ const { validateProduct } = require("../strategies/productValidation/productVali
 class ProductFacade {
   static async create(data) {
     const db = await connectDatabase();
-    const connection = await db.getConnection(); 
+    const connection = await db.getConnection();
     try {
-      const validatedData = validateProduct(data); 
+      const validatedData = validateProduct(data);
 
       const query = `
         INSERT INTO Product (id, name, brand, price, quantity, status) 
@@ -21,7 +21,7 @@ class ProductFacade {
       ]);
       return { id: result.insertId, ...validatedData, status: "active" };
     } finally {
-      connection.release(); 
+      connection.release();
     }
   }
 
@@ -87,7 +87,7 @@ class ProductFacade {
     try {
       const query = `SELECT * FROM Product WHERE id = ?`;
       const [rows] = await connection.execute(query, [id]);
-      return rows[0]; 
+      return rows[0];
     } finally {
       connection.release();
     }
