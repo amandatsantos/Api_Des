@@ -29,7 +29,7 @@ async function initTables(db) {
     id CHAR(36) NOT NULL PRIMARY KEY, 
     id_client CHAR(36) NOT NULL, 
     id_product CHAR(36) NOT NULL, 
-    total INT NOT NULL, 
+    total DECIMAL(10, 2) NOT NULL, 
     status ENUM('finished', 'canceled') DEFAULT 'finished', 
     UNIQUE KEY unique_client_product (id_client, id_product), 
     FOREIGN KEY (id_client) REFERENCES Client(id), 

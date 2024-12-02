@@ -94,6 +94,21 @@ class ClientController {
             return res.status(404).json({ error: error.message });
         }
     }
+
+    static async getClientsByStatus(req, res) {
+        try {
+            const { status } = req.query;
+
+            if (!['active', 'inactive'].includes(status)) {
+                return res.status(400).json({ error: "Status inválido. Use 'active' ou 'inactive'." });
+            }
+
+            const clients = await ClientFacade.getClientsByStatus(status);
+            res.status(200).json(clients);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = ClientController;
