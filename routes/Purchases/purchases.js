@@ -59,6 +59,42 @@ router.get("/purchases", PurchasesController.getAllPurchases);
 
 /**
  * @swagger
+ * /purchases/status:
+ *   get:
+ *     summary: Lista as compras por status (finalizadas ou canceladas)
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [finished, canceled]
+ *         description: Status da compra (finalizada ou cancelada)
+ *     responses:
+ *       200:
+ *         description: Lista de compras filtradas por status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   id_client:
+ *                     type: string
+ *                   id_product:
+ *                     type: string
+ *                   total:
+ *                     type: integer
+ *                   status:
+ *                     type: string
+ *                     example: "finished"
+ */
+router.get("/purchases/status", PurchasesController.getPurchasesByStatus);
+/**
+ * @swagger
  * /purchases/{id_client}:
  *   get:
  *     summary: Busca compras realizadas por um cliente específico
@@ -77,22 +113,16 @@ router.get("/purchases/:id_client", PurchasesController.getPurchasesByClient);
 
 /**
  * @swagger
- * /purchases/{id_client}/{id_product}:
+ * /purchases/{id}:
  *   put:
- *     summary: Atualiza o status de uma compra
+ *     summary: Atualiza o status ou total de uma compra
  *     parameters:
  *       - in: path
- *         name: id_client
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: ID do cliente
- *       - in: path
- *         name: id_product
- *         required: true
- *         schema:
- *           type: string
- *         description: ID do produto
+ *         description: ID da compra
  *     requestBody:
  *       required: true
  *       content:
@@ -102,35 +132,62 @@ router.get("/purchases/:id_client", PurchasesController.getPurchasesByClient);
  *             properties:
  *               status:
  *                 type: string
- *                 example: "delivered"
+ *                 example: "canceled"
+ *               total:
+ *                 type: integer
+ *                 example: 3
  *     responses:
  *       200:
- *         description: Status da compra atualizado com sucesso
+ *         description: Compra atualizada com sucesso
+ *       404:
+ *         description: Compra não encontrada
+ *       400:
+ *         description: Parâmetros inválidos
  */
-router.put("/purchases/:id_client/:id_product", PurchasesController.updatePurchase);
+router.put("/purchases/:id", PurchasesController.updatePurchase);
+
 
 /**
  * @swagger
- * /purchases/{id_client}/{id_product}:
+ * /purchases/delete/{id}:
  *   delete:
- *     summary: cancela uma compra
+ *     summary: Deleta uma compra pelo ID
  *     parameters:
  *       - in: path
- *         name: id_client
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: ID do cliente
+ *         description: ID da compra a ser deletada
+ *     responses:
+ *       200:
+ *         description: Compra deletada com sucesso
+ *       404:
+ *         description: Compra não encontrada
+ */
+
+router.delete('/purchases/delete/:id', PurchasesController.deletePurchase);
+
+/**
+ * @swagger
+ * /purchases/{id}:
+ *   delete:
+ *     summary: Cancela uma compra pelo ID
+ *     parameters:
  *       - in: path
- *         name: id_product
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: ID do produto
+ *         description: ID da compra
  *     responses:
  *       200:
  *         description: Compra cancelada com sucesso
+ *       404:
+ *         description: Compra não encontrada
  */
-router.delete("/purchases/:id_client/:id_product", PurchasesController.cancelPurchase);
+router.delete("/purchases/:id", PurchasesController.cancelPurchase);
+
+
 
 module.exports = router;

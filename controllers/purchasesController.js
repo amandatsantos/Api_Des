@@ -40,14 +40,21 @@ class purchasesController {
 
     static async updatePurchase(req, res) {
         try {
-            const { id_client, id_product } = req.params;
+            const { id } = req.params;
             const updateData = req.body;
 
-            const updatedPurchase = await PurchasesFacade.update(
-                id_client,
-                id_product,
-                updateData
-            );
+
+            if (!updateData.total && !updateData.status) {
+                return res.status(400).json({ error: "É necessário fornecer o total ou status para atualizar." });
+            }
+
+
+            const updatedPurchase = await PurchasesFacade.update(id, updateData);
+
+            if (!updatedPurchase) {
+                return res.status(404).json({ error: "Compra não encontrada para atualização." });
+            }
+
 
             res.status(200).json(updatedPurchase);
         } catch (error) {
@@ -55,13 +62,58 @@ class purchasesController {
         }
     }
 
-
     static async cancelPurchase(req, res) {
         try {
-            const { id_client, id_product } = req.params;
+            const { id } = req.params;
 
-            const result = await PurchasesFacade.cancelPurchase(id_client, id_product);
+
+            const canceledPurchase = await PurchasesFacade.cancelPurchase(id);
+
+            if (!canceledPurchase) {
+                return res.status(404).json({ error: "Compra não encontrada para cancelamento." });
+            }
+
+
+            res.status(200).json(canceledPurchase);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    static async deletePurchase(req, res) {
+        try {
+            const { id } = req.params;
+
+            if (!id) {
+                return res.status(400).json({ error: "O campo 'id' é obrigatório" });
+            }
+
+
+            const result = await PurchasesFacade.deletePurchase(id);
+
+
             res.status(200).json(result);
+        } catch (error) {
+
+            if (error.message === "Compra não encontrada") {
+                res.status(404).json({ error: error.message });
+            } else {
+                res.status(400).json({ error: error.message });
+            }
+        }
+    }
+
+    static async getPurchasesByStatus(req, res) {
+        try {
+            const { status } = req.query;
+
+            if (!['finished', 'canceled'].includes(status)) {
+                return res.status(400).json({ error: "Status inválido. Use 'finished' ou 'canceled'." });
+            }
+
+            const purchases = await PurchasesFacade.getPurchasesByStatus(status);
+
+            res.status(200).json(purchases);
         } catch (error) {
             res.status(400).json({ error: error.message });
         }

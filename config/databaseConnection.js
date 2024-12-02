@@ -16,7 +16,6 @@ async function connectDatabase() {
 
 
     await connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
-    console.log(`Banco de dados '${dbName}' verificado/criado com sucesso!`);
 
     await connection.end();
 
@@ -28,7 +27,7 @@ async function connectDatabase() {
       queueLimit: 0,
     });
 
-    console.log("Pool de conexões configurado com sucesso!");
+
     return pool;
   } catch (error) {
     console.error("Erro ao conectar ao banco de dados:", error.message);
