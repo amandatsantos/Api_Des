@@ -1,0 +1,14 @@
+{
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "window.autoDetectColorScheme": true,
+    "scm.alwaysShowActions": true,
+    "scm.alwaysShowRepositories": true,
+    "scm.providerCountBadge": "visible",
+    "extensions.closeExtensionDetailsOnViewChange": true,
+    "git.allowNoVerifyCommit": true,
+    "git.autoStash": true,
+    "git.branchRandomName.enable": true,
+    "terminal.integrated.accessibleViewFocusOnCommandExecution": false
+}
