@@ -89,6 +89,21 @@ class ProductController {
     }
   }
 
+  static async getProductsByStatus(req, res) {
+    try {
+      const { status } = req.query;
+
+      if (!['active', 'inactive'].includes(status)) {
+        return res.status(400).json({ error: "Status inválido. Use 'active' ou 'inactive'." });
+      }
+
+      const products = await ProductFacade.getProductsByStatus(status);
+      res.status(200).json(products);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
 }
 
 

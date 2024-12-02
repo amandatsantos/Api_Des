@@ -9,17 +9,19 @@ class ClientFacade {
         try {
             const validatedData = validateClient(data);
 
+            const id = validatedData.id || crypto.randomUUID();
             const query = `
         INSERT INTO Client (id, name, email, bornDate, status)
-        VALUES (UUID(), ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?)
       `;
-            const [result] = await connection.execute(query, [
+            await connection.execute(query, [
+                id,
                 validatedData.name,
                 validatedData.email,
                 validatedData.bornDate,
                 "active",
             ]);
-            return { id: result.insertId, ...validatedData, status: "active" };
+            return { id, ...validatedData, status: "active" };
         } finally {
             connection.release();
         }
@@ -119,6 +121,28 @@ class ClientFacade {
             if (result.affectedRows === 0) throw new Error("Cliente não encontrado");
 
             return { message: "Cliente deletado com sucesso" };
+        } finally {
+            connection.release();
+        }
+    }
+
+    static async getClientsByStatus(status) {
+        const db = await connectDatabase();
+        const connection = await db.getConnection();
+        try {
+            const query = `
+            SELECT id, name, status
+            FROM client
+            WHERE status = ?
+        `;
+
+            const [clients] = await connection.execute(query, [status]);
+
+            if (clients.length === 0) {
+                throw new Error(`Nenhum cliente encontrado com status ${status}.`);
+            }
+
+            return clients;
         } finally {
             connection.release();
         }

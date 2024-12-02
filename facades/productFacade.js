@@ -8,18 +8,21 @@ class ProductFacade {
     try {
       const validatedData = validateProduct(data);
 
+      const id = validatedData.id || crypto.randomUUID();
+
       const query = `
         INSERT INTO Product (id, name, brand, price, quantity, status) 
-        VALUES (UUID(), ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
       `;
-      const [result] = await connection.execute(query, [
+      await connection.execute(query, [
+        id,
         validatedData.name,
         validatedData.brand || null,
         validatedData.price,
         validatedData.quantity,
         "active",
       ]);
-      return { id: result.insertId, ...validatedData, status: "active" };
+      return { id, ...validatedData, status: "active" };
     } finally {
       connection.release();
     }
@@ -117,6 +120,28 @@ class ProductFacade {
       if (result.affectedRows === 0) throw new Error("Produto não encontrado");
 
       return { message: "Produto deletado com sucesso" };
+    } finally {
+      connection.release();
+    }
+  }
+
+  static async getProductsByStatus(status) {
+    const db = await connectDatabase();
+    const connection = await db.getConnection();
+    try {
+      const query = `
+            SELECT id, name, status
+            FROM product
+            WHERE status = ?
+        `;
+
+      const [products] = await connection.execute(query, [status]);
+
+      if (products.length === 0) {
+        throw new Error(`Nenhum produto encontrado com status ${status}.`);
+      }
+
+      return products;
     } finally {
       connection.release();
     }
