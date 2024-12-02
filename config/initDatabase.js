@@ -25,16 +25,17 @@ async function initTables(db) {
 
 
     await connection.execute(`
-      CREATE TABLE IF NOT EXISTS ClientBuyProduct (
-        id_client CHAR(36),
-        id_product CHAR(36),
-        total INT NOT NULL,
-        status ENUM('finished', 'canceled') DEFAULT 'finished',
-        PRIMARY KEY (id_client, id_product),
-        FOREIGN KEY (id_client) REFERENCES Client(id),
-        FOREIGN KEY (id_product) REFERENCES Product(id)
-      )
-    `);
+     CREATE TABLE IF NOT EXISTS ClientBuyProduct (
+    id CHAR(36) NOT NULL PRIMARY KEY, 
+    id_client CHAR(36) NOT NULL, 
+    id_product CHAR(36) NOT NULL, 
+    total INT NOT NULL, 
+    status ENUM('finished', 'canceled') DEFAULT 'finished', 
+    UNIQUE KEY unique_client_product (id_client, id_product), 
+    FOREIGN KEY (id_client) REFERENCES Client(id), 
+    FOREIGN KEY (id_product) REFERENCES Product(id) 
+  
+    );`);
 
     console.log("Tabelas verificadas/criadas com sucesso!");
   } catch (error) {

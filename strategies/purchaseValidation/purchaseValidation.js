@@ -1,7 +1,8 @@
 const { z } = require("zod");
 
 const purchaseSchema = z.object({
-
+    id_client: z.string().uuid({ message: "O ID do cliente deve ser um UUID válido." }),
+    id_product: z.string().uuid({ message: "O ID do produto deve ser um UUID válido." }),
     total: z.number().int().positive({ message: "O total deve ser um número inteiro positivo." }),
     status: z.enum(["finished", "canceled"]).optional(),
 });
@@ -18,4 +19,3 @@ function validatePurchase(data) {
 }
 
 module.exports = { validatePurchase };
-
