@@ -1,0 +1,178 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Container da modal */
+.modal {
+    background: #d1dab9;
+    /* Cor 1 */
+    padding: 25px 20px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    /* Responsividade */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    /* Sombra suave */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Animação de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Título da modal */
+.title {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #671045;
+    /* Cor 4 */
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.label {
+    color: #671045 !important;
+    /* Cor 4 */
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.products {
+    color: #671045;
+    /* Cor 4 */
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+/* Mensagem de erro */
+.error {
+    color: #671045;
+    /* Cor 4 */
+    font-size: 13px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* Estilo do formulário */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* Espaço entre os campos */
+}
+
+/* Campo de entrada (input) */
+.select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #6f646c;
+    /* Cor 3 */
+    border-radius: 5px;
+    outline: 1px solid #671045;
+    /* Cor 4 */
+    background: #f0f5e1;
+    /* Cor 2 */
+    font-size: 14px;
+    color: #31233e;
+    /* Cor 5 */
+}
+
+
+/* Botões */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Botão de cancelar */
+.cancel {
+    margin-top: 5px;
+    padding: 7px;
+    background-color: #92bea5;
+    border-color: transparent;
+    border-radius: 5px;
+    /* Cor 2 */
+    color: #31233e;
+    font-weight: bold;
+    /* Cor 5 */
+}
+
+.cancel:hover {
+    background: #31233e;
+    /* Cor 5 */
+    color: #d1dab9;
+    /* Cor 1 */
+}
+
+/* Botão de adicionar */
+.submit {
+    margin-top: 5px;
+    padding: 7px !important;
+    border-color: transparent;
+    border-radius: 5px;
+    background-color: #671045;
+    /* Cor 4 */
+    color: #d1dab9;
+    font-weight: bold;
+    /* Cor 1 */
+}
+
+.submit:hover {
+    background: #31233e;
+    /* Cor 5 */
+    color: #d1dab9;
+    /* Cor 1 */
+}
+
+/* Ajuste do input de data */
+.input[type="date"] {
+    color: #31233e;
+    /* Cor do texto */
+    background: #f0f5e1;
+    /* Cor 2 */
+}
+
+/* Placeholder */
+.input::placeholder {
+    color: #6f646c;
+    /* Cor 3 */
+}

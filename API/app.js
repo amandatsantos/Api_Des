@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");  // Adiciona o pacote cors
 const connectDatabase = require("./config/databaseConnection");
 const initTables = require("./config/initDatabase");
 const setupSwagger = require("./swaggerConfig");
@@ -10,6 +11,17 @@ async function startServer() {
     await initTables(db);
 
     const app = express();
+
+    // Configuração do CORS (permite todas as origens)
+    app.use(cors()); // Permite todas as origens
+
+    // Ou, se precisar de uma configuração mais específica:
+    // app.use(cors({
+    //   origin: 'http://exemplo.com', // Permite apenas esse domínio
+    //   methods: ['GET', 'POST'],
+    //   allowedHeaders: ['Content-Type', 'Authorization'],
+    // }));
+
     app.use(express.json()); // Middleware para processar JSON nas requisições
 
     // Configuração do Swagger
@@ -18,13 +30,12 @@ async function startServer() {
     // Importa as rotas de produtos e clientes
     const productRoutes = require("./routes/Product/productRoutes");
     const clientRoutes = require("./routes/Client/clientRoutes");
-    const purchases = require("./routes/Purchases/purchases")// Importando as rotas de clientes
+    const purchases = require("./routes/Purchases/purchases");
 
     // Usa as rotas de produtos e clientes no caminho "/api/"
     app.use("/api/", productRoutes);  // Rotas para produtos
     app.use("/api/", clientRoutes);    // Rotas para clientes
-    app.use("/api/", purchases);    // Rotas para clientes
-
+    app.use("/api/", purchases);    // Rotas de compras
 
     // Log para mapear as rotas acessadas
     app.use((req, res, next) => {
