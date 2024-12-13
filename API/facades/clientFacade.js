@@ -42,6 +42,7 @@ class ClientFacade {
             const [result] = await connection.execute(query, [
                 validatedData.name,
                 validatedData.email,
+                validatedData.bornDate,
                 id,
             ]);
             if (result.affectedRows === 0) throw new Error("Cliente não encontrado");
