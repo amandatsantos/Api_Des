@@ -7,6 +7,7 @@ async function initTables(db) {
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         bornDate DATE NOT NULL,
+        phone CHAR(36) DEFAULT 'null',
         status ENUM('active', 'inactive') DEFAULT 'active'
       )
     `);
