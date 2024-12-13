@@ -36,7 +36,7 @@ class ClientFacade {
 
             const query = `
         UPDATE Client 
-        SET name = ?, email = ?,bornDate = ?, phone = ?
+        SET name = ?, email = ?,bornDate = ?
         WHERE id = ?
       `;
             const [result] = await connection.execute(query, [
