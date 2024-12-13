@@ -20,11 +20,10 @@ const global = StyleSheet.create({
     },
     container: {
        
-        width: '100%',                      // Largura total da tela
-        //paddingHorizontal: 20,              // Reduz o espaçamento nas laterais
-        padding: 16,                     // Diminui o espaçamento superior
+        width: '100%',                      
+        padding: 16,                     
         flex: 1,
-        backgroundColor: theme.light.background, // Cor de fundo
+        backgroundColor: theme.light.background, 
         flexDirection: 'row',
         
     }
