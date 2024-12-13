@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import ProductModal from "@/app/components/NewProduct/productmodal";
 import { ProductService } from "@/service/ProductService";
+import EditProductModal from "@/app/components/EditProductModal/editproductmodal";
 
 type Product = {
   id: number;
@@ -17,39 +18,57 @@ const ProductsPage: React.FC = () => {
   const productService = new ProductService();
   const [products, setProducts] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [productToEdit, setProductToEdit] = useState<Product | null>(null);
 
   useEffect(() => {
     productService
       .getAllProducts()
       .then((response) => {
-        console.log(response.data);
         setProducts(response.data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar clientes:", error);
+        console.error("Erro ao buscar produtos:", error);
       });
   }, []);
 
-  const handleAddProduct = async (NewProduct: {
+  const handleAddProduct = async (newProduct: {
     name: string;
     brand: string;
     price: number;
     quantity: number;
   }) => {
     try {
-      const createProduct = await productService.createProduct(NewProduct);
-      setProducts((prevProduct) => [...prevProduct, createProduct.data]);
+      const createProduct = await productService.createProduct(newProduct);
+      setProducts((prevProducts) => [...prevProducts, createProduct.data]);
     } catch (error) {
-      console.error("Erro ao adicionar cliente:", error);
+      console.error("Erro ao adicionar produto:", error);
     }
   };
 
-  const handleEditProduct = (id: number, updatedProduct: Partial<Product>) => {
-    setProducts(
-      products.map((product) =>
-        product.id === id ? { ...product, ...updatedProduct } : product
-      )
-    );
+  const handleEditProduct = async (
+    id: number,
+    updatedProduct: Partial<Product>
+  ) => {
+    try {
+      await productService.updateProduct(id, updatedProduct);
+      setProducts(
+        products.map((product) =>
+          product.id === id ? { ...product, ...updatedProduct } : product
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao editar produto:", error);
+    }
+  };
+
+  const handleDeleteProduct = async (id: number) => {
+    try {
+      await productService.deleteProduct(id.toString());
+      setProducts(products.filter((product) => product.id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir produto:", error);
+    }
   };
 
   return (
@@ -59,7 +78,7 @@ const ProductsPage: React.FC = () => {
           className={styles.newClient}
           onClick={() => setIsModalOpen(true)}
         >
-          Novo produto
+          Novo Produto
         </button>
       </div>
       <div className={styles.grid}>
@@ -74,23 +93,18 @@ const ProductsPage: React.FC = () => {
             <div className={styles.actions}>
               <button
                 className={styles.edit}
-                onClick={() =>
-                  handleEditProduct(product.id, {
-                    quantity: product.quantity + 1,
-                  })
-                }
+                onClick={() => {
+                  setProductToEdit(product);
+                  setIsEditModalOpen(true);
+                }}
               >
-                Adicionar Estoque
+                Editar
               </button>
               <button
                 className={styles.delete}
-                onClick={() =>
-                  handleEditProduct(product.id, {
-                    quantity: Math.max(product.quantity - 1, 0),
-                  })
-                }
+                onClick={() => handleDeleteProduct(product.id)}
               >
-                Remover Estoque
+                Excluir
               </button>
             </div>
           </div>
@@ -101,6 +115,12 @@ const ProductsPage: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddProduct}
         existingIDs={[]}
+      />
+      <EditProductModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        product={productToEdit}
+        onSubmit={handleEditProduct}
       />
     </div>
   );

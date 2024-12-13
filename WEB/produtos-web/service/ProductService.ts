@@ -10,15 +10,30 @@ export class ProductService {
   }
   getAllProducts() {
     return axiosInstance.get("api/products");
-    }
-    
-    createProduct(productData: { name: string; brand: string; price: number; quantity: number }) {
-      return axiosInstance.post("api/products", productData);
-    }   
+  }
 
-    deleteProduct(productId: string) {
-      return axiosInstance.delete(`api/products/delete/${productId}`);
-    }
+  createProduct(productData: {
+    name: string;
+    brand: string;
+    price: number;
+    quantity: number;
+  }) {
+    return axiosInstance.post("api/products", productData);
+  }
 
-    
+  deleteProduct(productId: string) {
+    return axiosInstance.delete(`api/products/delete/${productId}`);
+  }
+
+  updateProduct(
+    productId: number,
+    updatedData: Partial<{
+      name: string;
+      brand: string;
+      price: number;
+      quantity: number;
+    }>
+  ) {
+    return axiosInstance.put(`api/products/${productId}`, updatedData);
+  }
 }

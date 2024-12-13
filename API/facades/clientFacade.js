@@ -36,12 +36,13 @@ class ClientFacade {
 
             const query = `
         UPDATE Client 
-        SET name = ?, email = ?,bornDate = ?, phone = ?
+        SET name = ?, email = ?,bornDate = ?
         WHERE id = ?
       `;
             const [result] = await connection.execute(query, [
                 validatedData.name,
                 validatedData.email,
+                validatedData.bornDate,
                 id,
             ]);
             if (result.affectedRows === 0) throw new Error("Cliente não encontrado");
