@@ -7,16 +7,8 @@ export type RoutesParams = {
     };
 
     Clientes: undefined;
-    // Outras rotas...
-    Produtos: {
-      id: string,
-      name: string,
-      brand: string,
-      price: number,
-      quantity: number,
-      status: string,
-    };
-
+    
+    Produto: undefined;
     Compras: undefined;
 
     AdicionarCliente: undefined;
@@ -24,7 +16,9 @@ export type RoutesParams = {
     AdicionarCompra: undefined;
 
     AdicionarProduto: undefined;
-    ClienteDetalhes: { cliente: { id: string; name: string; email: string; bornDate: string; status: string } }; // Adapte conforme os campos do cliente
+    ClienteDetalhes: { cliente: { id: string; name: string; email: string; bornDate: string; status: string } }; 
+
+    ProdutoDetalhes: {produto: {id: string; name: string; brand: string; price: number; quantity: number; status: string}}
     EditarCliente: { cliente: { id: string; name: string; status: string } };
   };
   

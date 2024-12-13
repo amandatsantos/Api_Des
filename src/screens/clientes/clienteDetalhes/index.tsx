@@ -6,7 +6,6 @@ import { RoutesParams } from '../../../navigation/routesParams';
 import axios from 'axios';
 import { theme } from '../../../../theme';
 
-// Tipos
 type ClienteDetalhesRouteProp = RouteProp<RoutesParams, 'ClienteDetalhes'>;
 type ClienteDetalhesNavigationProp = StackNavigationProp<RoutesParams, 'ClienteDetalhes'>;
 

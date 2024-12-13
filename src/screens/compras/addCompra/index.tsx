@@ -3,19 +3,31 @@ import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, Platform } 
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Navbar from '../../../components/navBar';
+import { RoutesParams } from '../../../navigation/routesParams';
+import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const API_URL = 'http://localhost:5265'; // Substitua pelo IP do seu servidor backend
+type AdicionarCompraRouteProp = RouteProp<RoutesParams, 'AdicionarCompra'>;
+type ClienteDetalhesRouteProp = RouteProp<RoutesParams, 'ClienteDetalhes'>;
+type AdicionarCompraNavigationProp = StackNavigationProp<RoutesParams, 'AdicionarCompra'>;
+
+const API_URL = 'http://localhost:5265'; 
 
 export default function AdicionarCompra() {
+  
+  const route = useRoute<ClienteDetalhesRouteProp>(); 
+  
+  const { cliente } = route.params; 
+
+  const { id } = cliente;
+
   const [total, setTotal] = useState('');
   const [status, setStatus] = useState('');
+  const [id_client, setId_client] = useState(cliente.id)
+  const [id_product, setId_product] = useState('');
   
-
-  
-
-  // Função para adicionar cliente
   const adicionarCompra = async () => {
-    if (!total || !status) {
+    if (!total || !status || !id_product || !id_client) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
@@ -23,10 +35,14 @@ export default function AdicionarCompra() {
     try {
       const response = await axios.post(API_URL, { 
         total, 
-        status, 
+        status,
+        id_client,
+        id_product
       });
       setTotal('');
       setStatus('');
+      setId_client('');
+      setId_product('');
       Alert.alert('Sucesso', 'Compra adicionada com sucesso!');
     } catch (error) {
       console.error(error);
@@ -51,9 +67,6 @@ export default function AdicionarCompra() {
         value={status}
         onChangeText={setStatus}
       />
-
-    
-      
 
       <TouchableOpacity style={styles.button} onPress={adicionarCompra}>
         <Text style={styles.buttonText}>Adicionar</Text>

@@ -10,6 +10,7 @@ import AdicionarCompra from '../screens/compras/addCompra';
 import AdicionarProduto from '../screens/produtos/addProduto';
 import EditarCliente from '../screens/clientes/editarCliente';
 import ClienteDetalhes from '../screens/clientes/clienteDetalhes';
+import ProdutoDetalhes from '../screens/produtos/produtoDetalhes';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ export default function AppNavigation() {
         <Stack.Screen name="AdicionarProduto" component={AdicionarProduto} />
         <Stack.Screen name="ClienteDetalhes" component={ClienteDetalhes} />
         <Stack.Screen name="EditarCliente" component={EditarCliente} />
+        <Stack.Screen name="ProdutoDetalhes" component={ProdutoDetalhes}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
